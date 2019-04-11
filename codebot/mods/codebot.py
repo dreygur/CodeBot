@@ -89,9 +89,13 @@ class CodeBot(Client):
 			# Set the bot to reply or not
 			ctrl(self, inComingText, message_object, thread_id, thread_type)
 
-		if not inComingText.startswith("/") and getBotState() is False:
-			if thread_type == ThreadType.USER and author_id == gf:
+		if not inComingText.startswith("/")\
+			and getBotState() is False\
+			and thread_type == ThreadType.USER:
+
+			if author_id == gf:
 				sendToGF(self, inComingText, message_object, thread_id, thread_type)
-			elif thread_type == ThreadType.USER and author_id != self.uid:
-				reply = "I'm offline right now. It's an automated message. I'll reply you within a short time.\n\nThanks!"
-				self.send(Message(reply, reply_to_id=message_object.uid), thread_id=thread_id, thread_type=thread_type)
+			elif author_id != self.uid:
+				reply = """I'm offline right now. It's an automated message. To stop this message please reply with 'stop' before sending any message. I'll reply you within a short time.\n\nThanks!"""
+				if inComingText.lower().startswith("stop"):
+					self.send(Message(reply, reply_to_id=message_object.uid), thread_id=thread_id, thread_type=thread_type)
