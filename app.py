@@ -30,89 +30,11 @@ import requests as rq
 from fbchat import Client
 from fbchat.models import *
 
-class CodeBot(Client):
-	"""
-	Overriding the fbchat.Client class
-	"""
+# Stop Writing Bytecodes
+sys.dont_write_bytecode = True
 
-	def onMessage(
-		self,
-		author_id,
-		message_object,
-		thread_id,
-		thread_type,
-		**kwargs
-	):
-
-		"""
-		Overriding onMessage method
-		"""
-
-		# Functionwide Variables
-		replyText: str = ""
-		codeUri: str = ""
-		code: str = ""
-
-		# Text Message from User
-		inComingText = message_object.text.lower()
-
-		# Start execution if found command "/run"
-		if inComingText.startswith("/run"):
-			replyText = message_object.replied_to
-
-			if replyText is not None:
-				# SOURCE-CODE of URI
-				codeUri = replyText.text
-
-				if codeUri is None:
-					reply = "Please reply to the message containg code..."
-				else:
-					if codeUri[:7] == "http://" or codeUri[:8] == "https://":
-						site = codeUri.split("/")[2]
-					else: site = ""
-
-					if site == "pastebin.com":
-						code = rq.get(codeUri[:21] + "raw/" + codeUri[21:]).text
-					elif site == "paste.ubuntu.com":
-						codeUri = codeUri if codeUri[-1] == '/' else codeUri + '/'
-						code = rq.get(codeUri + 'plain',
-							cookies={"sessionid": "45jgnmetiw3qjbq2f49x06hd8h8bi3vy"}).text
-						print(code)
-					else: code = codeUri
-
-					args = inComingText.split(" ")
-					reply = 'Please Wait while I Complete Execution :)'
-					error = False
-					language = {'C':'C', 'C++':'Cpp', 'Cpp':'Cpp', 'Java':'Java', 'Python':'Python3','Python3':'Python3','Py':'Python3', 'C#':'Csharp', 'Csharp':'Csharp'}
-
-					if len(args) == 1:
-						reply += '\n\nBy the way ;) , the standard format is /run language input(s)'
-						codeArgs = (code, 'C', '', self, thread_id, thread_type, message_object.uid)
-					elif len(args) == 2:
-						lang = args[1].title()
-						if lang in language.keys():
-							codeArgs = (code, language[lang], '', self, thread_id, thread_type, message_object.uid)
-							reply += '\n\nBy the way, I\'ll consider that this program has no input ;)'
-						else:
-							error = True
-							reply = 'Lanuguae Not Supported! Supported Languages are: C / Cpp / Java / Python / C#'
-					else:
-						lang = args[1].title()
-						if lang in language.keys():
-							codeArgs = (code, language[lang], ' '.join(args[2:]), self, thread_id, thread_type, message_object.uid)
-							reply += '\n\nBy the way, Best of Luck!'
-						else:
-							error = True
-							reply = 'Lanuguae Not Supported! Supported Languages are: C / C++(Cpp) / Java / Python / C#(Csharp)'
-					if not error:
-						threading.Thread(target=runCode, args=codeArgs).start()
-						# rCode = threading.Thread(target=runCode, args=args)
-						# rCode.start()
-						# rCode.join()
-					self.send(Message(reply), thread_id=thread_id, thread_type=thread_type)
-
-		# self.send(Message('Please reply to the messsage that contains code you want to run and say "/run language input(s)" '), thread_id=thread_id, thread_type=thread_type)
-
+# In-App Modules
+from codebot import CodeBot
 
 def runCode(
 	code: str,
@@ -129,27 +51,34 @@ def runCode(
 	This simply passes the code to https://geekforgeeks.com
 	and returns the formatted result to user.
 
-	Arguments:
+	Args:
 		code 	The source-code to be run
 		lang 	Target Language of Source-Code
 		inp 	Input for the executed instance
 
 	Returns:
 		status 	Status for the runtime
+
+	Raises:
+		None
 	"""
 
 	uri = "https://ide.geeksforgeeks.org/"
 	data = {'lang':lang, 'code': code, 'input': inp, 'save': 'false'}
 	res = rq.post(uri + "main.php", data=data).json()
-	reply = "Report: \n+-+-+-+-+-+\n\n"
+	reply = "Report: \n+-+-+-+\n\n"
 
 	if res["status"] == "SUCCESS":
+		# Wait 10 Seconds to get the Output
 		sleep(10)
+		# Response from Compilation Instance
 		nres = rq.post(uri + "submissionResult.php",
 						data = {
 							'sid': res['sid'],
 							'requestType': 'fetchResults'
 						}).json()
+
+		# Result Success
 		if nres.get("compResult") == "S":
 			reply += "Compile: Success!\n"
 			if nres.get("rntError"):
@@ -162,7 +91,9 @@ def runCode(
 			reply += '\n\nTime: ' + nres['time'] + '\nMemory: ' + nres['memory']
 		
 		output = nres.get("output")
-		obj.send(Message(reply, reply_to_id=uid), thread_id=thread_id, thread_type=thread_type)
+		obj.send(Message(reply, reply_to_id=uid),
+					thread_id=thread_id,
+					thread_type=thread_type)
 
 		if output is None:
 			return
@@ -172,10 +103,15 @@ def runCode(
 				n = len(output) // 2
 				outputs = [output[i:i+n] for i in range(0, len(output), n)]
 				for output in outputs:
-					uid = obj.send(Message(output, reply_to_id=uid), thread_id=thread_id, thread_type=thread_type)
+					uid = obj.send(Message(output,
+									reply_to_id=uid),
+									thread_id=thread_id,
+									thread_type=thread_type)
 					sleep(randint(1,3))
 			else:
-				obj.send(Message(output, reply_to_id=uid), thread_id=thread_id, thread_type=thread_type)
+				obj.send(Message(output, reply_to_id=uid),
+						thread_id=thread_id,
+						thread_type=thread_type)
 		else:
 			n = str(randint(0, 1000))
 			while os.path.isfile(n):
@@ -184,7 +120,10 @@ def runCode(
 			n += '.txt'
 			with open(n, 'w') as f:
 				f.write(output)
-			obj.sendLocalFiles([n], Message('Output:', reply_to_id=uid), thread_id=thread_id, thread_type=thread_type)
+			obj.sendLocalFiles([n],
+								Message('Output:', reply_to_id=uid),
+								thread_id=thread_id,
+								thread_type=thread_type)
 			os.remove(n)
 	# return status
 
@@ -192,7 +131,7 @@ def app() -> None:
 	"""
 	The MAIN function
 
-	Arguents:
+	Args:
 		None
 
 	Returns:
@@ -212,7 +151,10 @@ def app() -> None:
 		except: pass
 
 		# fbchat Instance
-		fb = CodeBot(user, password, user_agent=agent, session_cookies=cookies, logging_level=20)
+		fb = CodeBot(user, password,
+					user_agent=agent,
+					session_cookies=cookies,
+					logging_level=20)
 		# fbchat Session
 		with open("cookies.json", "w") as cookie:
 			json.dump(fb.getSession(), cookie)
@@ -224,6 +166,19 @@ def app() -> None:
 		print("[*] Check network connection...")
 
 def awaker():
+	"""
+	Keeps the Application running 24/7
+	on Heroku
+
+	Args:
+		None
+
+	Returns:
+		None
+
+	Raises:
+		None
+	"""
 	while True:
 		print('[*] Awaking App!')
 		rq.get("https://codebot-ttl.herokuapp.com/")
@@ -233,11 +188,14 @@ if __name__ == "__main__":
 	try:
 		# Run the MAIN FUNCTION
 		main = threading.Thread(target=app)
+		awake = threading.Thread(target=awaker)
 
 		# Start Thread
 		main.start()
+		awake.start()
 
 		# Join Threads with OS Processes
 		main.join()
+		awake.join()
 	except Exception as e:
 		print(e)
