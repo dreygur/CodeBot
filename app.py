@@ -68,15 +68,16 @@ class CodeBot(Client):
 					reply = "Please reply to the message containg code..."
 				else:
 					if codeUri[:7] == "http://" or codeUri[:8] == "https://":
-						site = codeUri.split("//")[1]
+						site = codeUri.split("/")[2]
 					else: site = ""
 
-					if site == "pastebin.com/":
+					if site == "pastebin.com":
 						code = rq.get(codeUri[:21] + "raw/" + codeUri[21:]).text
-					elif site == "paste.ubuntu.com/p/":
+					elif site == "paste.ubuntu.com":
 						codeUri = codeUri if codeUri[-1] == '/' else codeUri + '/'
 						code = rq.get(codeUri + 'plain',
-							cookies={'sessionid': 'v0qhur8831ac0n7rhvf6xq8h9x7wwypn'}).text
+							cookies={"sessionid": "45jgnmetiw3qjbq2f49x06hd8h8bi3vy"}).text
+						print(code)
 					else: code = codeUri
 
 					args = inComingText.split(" ")
@@ -161,7 +162,6 @@ def runCode(
 			reply += '\n\nTime: ' + nres['time'] + '\nMemory: ' + nres['memory']
 		
 		output = nres.get("output")
-
 		obj.send(Message(reply, reply_to_id=uid), thread_id=thread_id, thread_type=thread_type)
 
 		if output is None:
@@ -226,19 +226,18 @@ def app() -> None:
 def awaker():
 	while True:
 		print('[*] Awaking App!')
-		rq.get('https://codebot-ttl.herokuapp.com/')
+		rq.get("https://codebot-ttl.herokuapp.com/")
 		sleep(300)
 
 if __name__ == "__main__":
 	try:
 		# Run the MAIN FUNCTION
-		app()
-		# main = threading.Thread(target=app)
+		main = threading.Thread(target=app)
 
-		# # Start Thread
-		# main.start()
+		# Start Thread
+		main.start()
 
-		# # Join Threads with OS Processes
-		# main.join()
+		# Join Threads with OS Processes
+		main.join()
 	except Exception as e:
 		print(e)
