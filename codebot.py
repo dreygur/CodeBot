@@ -1,3 +1,35 @@
+#!/usr/bin/env python3
+
+"""
+Chatbot for Messenger Groups to Compile
+and reply code-status.
+
+The bot currently works as a facebook user
+
+Depends on:
+	- GeekForGeeks (website) - for code execution
+	- fbchat (module) - to interact with facebook
+	- json (module) - json data
+	- threading (module) - for multithreading 
+	- requests (module) - for http requests
+
+Author: Rakibul Yeasin
+	- Github: dreygur
+	- Facebook: dreygur
+	- Twitter: drreygur
+"""
+
+import os
+import sys
+import json
+import threading
+from time import sleep
+
+# Third-Party Modules
+import requests as rq
+from fbchat import Client
+from fbchat.models import *
+
 class CodeBot(Client):
 	"""
 	Overriding the fbchat.Client class
