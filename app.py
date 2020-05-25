@@ -160,7 +160,8 @@ def runCode(
 		if nres.get("time") is not None and nres.get("memory") is not None:
 			reply += '\n\nTime: ' + nres['time'] + '\nMemory: ' + nres['memory']
 		
-		output = nres['output']
+		output = nres.get("output")
+
 		obj.send(Message(reply, reply_to_id=uid), thread_id=thread_id, thread_type=thread_type)
 
 		if output is None:
