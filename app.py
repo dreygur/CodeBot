@@ -225,7 +225,7 @@ def app() -> None:
 def awaker():
 	while True:
 		print('[*] Awaking App!')
-		requests.get('https://antheaxs2.herokuapp.com/')
+		rq.get('https://codebot-ttl.herokuapp.com/')
 		sleep(300)
 
 if __name__ == "__main__":
