@@ -30,7 +30,7 @@ import requests as rq
 from fbchat import Client
 from fbchat.models import *
 
-from app import runCode
+from .app import runCode
 
 class CodeBot(Client):
 	"""
