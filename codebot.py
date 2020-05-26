@@ -30,6 +30,8 @@ import requests as rq
 from fbchat import Client
 from fbchat.models import *
 
+from app import runCode
+
 class CodeBot(Client):
 	"""
 	Overriding the fbchat.Client class
