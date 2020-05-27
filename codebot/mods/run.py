@@ -37,6 +37,7 @@ def run(
 	obj,
 	author_id,
 	message_object,
+	inComingText,
 	thread_id,
 	thread_type
 ):
