@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
+# Test
+from codebot.mods.codebot import CodeBot
+from codebot.mods.coderunner import runCode
 
-from unittest import TestCase
-
-
-class TestCodeRunner(TestCase):
-	def test_codeRun(self):
+def test_runCode():
+	bot = CodeBot(email, password)
+	assert runCode("print('Hello from Python')", "python3", "", obj, thread_id, thread_type, uid)

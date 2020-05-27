@@ -1,1 +1,3 @@
 venv
+.pytest*
+*/__pycache__

@@ -32,6 +32,8 @@ from fbchat.models import *
 
 # In-App Modules
 from codebot.mods.codebot import CodeBot
+from codebot.mods.creds import user, password, agent, getfbCookie,setfbCookie
+
 
 def app() -> None:
 	"""
@@ -43,33 +45,19 @@ def app() -> None:
 	Returns:
 		None
 	"""
-	try:
-		# Facebook User Details
-		user = "01647561445"
-		password = "798193274622"
-		agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"
+	# Cookies
+	cookies = getfbCookie()
 
-		# Use Old Cookie
-		cookies: dict = {}
-		try:
-			with open("cookies.json", "r") as cookie:
-				cookies = json.load(cookie)
-		except: pass
+	# fbchat Instance
+	fb = CodeBot(user, password,
+				user_agent=agent,
+				session_cookies=cookies,
+				logging_level=20)
 
-		# fbchat Instance
-		fb = CodeBot(user, password,
-					user_agent=agent,
-					session_cookies=cookies,
-					logging_level=20)
-		# fbchat Session
-		with open("cookies.json", "w") as cookie:
-			json.dump(fb.getSession(), cookie)
+	# Save retrieved cookie
+	setfbCookie(fb.getSession())
 
-		fb.listen()
-		# res = runCode("print('Hello')", "python3", "")
-		# print(res)
-	except rq.exceptions.ConnectionError:
-		print("[*] Check network connection...")
+	fb.listen()
 
 def awaker():
 	"""

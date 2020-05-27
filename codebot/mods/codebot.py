@@ -32,6 +32,8 @@ from fbchat.models import *
 
 # In-App Modules
 from codebot.mods.run import run
+from codebot.mods.creds import botState
+from codebot.mods.creds import ubuntuPastebinCookie
 
 class CodeBot(Client):
 	"""
@@ -68,14 +70,18 @@ class CodeBot(Client):
 		replyText: str = ""
 		codeUri: str = ""
 		code: str = ""
-		ubuntuPastebin: str = "45jgnmetiw3qjbq2f49x06hd8h8bi3vy"
+		ubuntuPastebin: str = ubuntuPastebinCookie
 
 		# Text Message from User
 		inComingText = message_object.text.lower()
 
-		# Start execution if found command "/run"
-		if inComingText.startswith("/run"):
+		# Start execution if found command "/run" Bot's Status is Up
+		if inComingText.startswith("/run") and botState:
 			# Run the code and send back the result to user
 			run(self, author_id, message_object, inComingText, thread_id, thread_type)
 
-		# self.send(Message('Please reply to the messsage that contains code you want to run and say "/run language input(s)" '), thread_id=thread_id, thread_type=thread_type)
+			# self.send(Message('Please reply to the messsage that contains code you want to run and say "/run language input(s)" '), thread_id=thread_id, thread_type=thread_type)
+
+		if inComingText.startswith("/ctrl"):
+			# Set the bot to reply or not
+			ctrl(self, inComingText)
