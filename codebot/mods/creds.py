@@ -24,18 +24,22 @@ import json
 from typing import Dict
 
 # Facebook User Details
-user = "01647561445"
-password = "798193274622"
+user = "01913580250"
+password = "RYT.Yeasin&#@221"
 cookieFile = os.path.realpath(os.path.join(os.getcwd(), "codebot", "conf", "cookies.json"))
 
 # Bot Status
 botState = os.path.realpath(os.path.join(os.getcwd(), "codebot", "conf", "botstat.txt"))
 
 # User-Agent
-agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"
+# agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"
+agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0"
 
 # Ubuntu-Paste cookie
 ubuntuPastebinCookie: str = "45jgnmetiw3qjbq2f49x06hd8h8bi3vy"
+
+# Specific Contacts on Facebook
+gf = "100024381335481"
 
 def getfbCookie() -> Dict:
 	"""

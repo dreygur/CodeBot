@@ -35,6 +35,8 @@ from codebot.mods.run import run
 from codebot.mods.control import ctrl
 from codebot.mods.creds import getBotState
 from codebot.mods.creds import ubuntuPastebinCookie
+from codebot.mods.creds import gf
+from codebot.mods.gf import sendToGF
 
 class CodeBot(Client):
 	"""
@@ -87,7 +89,9 @@ class CodeBot(Client):
 			# Set the bot to reply or not
 			ctrl(self, inComingText, message_object, thread_id, thread_type)
 
-		if not inComingText.startswith("/") and getBotState() is False and author_id != self.uid:
-			if thread_type == ThreadType.USER:
-				reply = "I'm not availbale right now. I'll reply you within a short time.\nThanks!"
+		if not inComingText.startswith("/") and getBotState() is False:
+			if thread_type == ThreadType.USER and author_id == gf:
+				sendToGF(self, inComingText, message_object, thread_id, thread_type)
+			elif thread_type == ThreadType.USER and author_id != self.uid:
+				reply = "I'm offline right now. It's an automated message. I'll reply you within a short time.\n\nThanks!"
 				self.send(Message(reply, reply_to_id=message_object.uid), thread_id=thread_id, thread_type=thread_type)
