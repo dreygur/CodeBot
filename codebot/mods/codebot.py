@@ -76,6 +76,6 @@ class CodeBot(Client):
 		# Start execution if found command "/run"
 		if inComingText.startswith("/run"):
 			# Run the code and send back the result to user
-			run(self, author_id, message_object, thread_id, thread_type)
+			run(self, author_id, message_object, inComingText, thread_id, thread_type)
 
 		# self.send(Message('Please reply to the messsage that contains code you want to run and say "/run language input(s)" '), thread_id=thread_id, thread_type=thread_type)
