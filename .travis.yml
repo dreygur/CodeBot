@@ -1,0 +1,26 @@
+# Tesing Favourite Package Installer
+
+language: python
+
+os:
+  - linux
+
+python:
+  - 3.6
+
+cache: pip
+
+script:
+  #- python3 Favourite_Packages_Installer.py < tests/fvpi_input.txt
+  - bash ./Bash/codebloks-installer.sh
+
+
+notifications:
+  slack:
+    rooms:
+      - dropnup:x1ZOJDTXefsq1eLGChjXgKhk#general
+      - dropnup:x1ZOJDTXefsq1eLGChjXgKhk#dev
+
+before_script:
+  - sudo apt install -y --reinstall lsb-release
+  #- python3 -m pip install -r requirements.txt

@@ -30,11 +30,8 @@ import requests as rq
 from fbchat import Client
 from fbchat.models import *
 
-# Stop Writing Bytecodes
-sys.dont_write_bytecode = True
-
 # In-App Modules
-from codebot import CodeBot
+from codebot.mods.codebot import CodeBot
 
 def app() -> None:
 	"""
@@ -92,19 +89,3 @@ def awaker():
 		print('[*] Awaking App!')
 		rq.get("https://codebot-ttl.herokuapp.com/")
 		sleep(300)
-
-if __name__ == "__main__":
-	try:
-		# Run the MAIN FUNCTION
-		main = threading.Thread(target=app)
-		awake = threading.Thread(target=awaker)
-
-		# Start Thread
-		main.start()
-		awake.start()
-
-		# Join Threads with OS Processes
-		main.join()
-		awake.join()
-	except Exception as e:
-		print(e)
