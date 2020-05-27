@@ -33,7 +33,7 @@ from fbchat.models import *
 # In-App Modules
 from codebot.mods.run import run
 from codebot.mods.control import ctrl
-from codebot.mods.creds import botState
+from codebot.mods.creds import getBotState
 from codebot.mods.creds import ubuntuPastebinCookie
 
 class CodeBot(Client):
@@ -77,7 +77,7 @@ class CodeBot(Client):
 		inComingText = message_object.text.lower()
 
 		# Start execution if found command "/run" Bot's Status is Up
-		if inComingText.startswith("/run") and botState:
+		if inComingText.startswith("/run") and getBotState():
 			# Run the code and send back the result to user
 			run(self, author_id, message_object, inComingText, thread_id, thread_type)
 
@@ -85,4 +85,4 @@ class CodeBot(Client):
 
 		if inComingText.startswith("/ctrl"):
 			# Set the bot to reply or not
-			ctrl(self, inComingText)
+			ctrl(self, inComingText, message_object, thread_id, thread_type)

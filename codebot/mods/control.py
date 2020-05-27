@@ -18,10 +18,11 @@ Author: Rakibul Yeasin
 	- Facebook: dreygur
 	- Twitter: drreygur
 """
+from fbchat.models import *
 
-from codebot.mods.creds import botState
+from codebot.mods.creds import setBotState
 
-def ctrl(obj, inComingText):
+def ctrl(obj, inComingText, message_object, thread_id, thread_type):
 	"""
 	Controls the bot's awaking time
 
@@ -31,5 +32,10 @@ def ctrl(obj, inComingText):
 	"""
 
 	command = inComingText.split(" ")[1]
-	if command == "off": botState = False
-	elif command == "on": botState = True
+	reply = f"Bot Turned {command}!"
+	if command == "off":
+		setBotState(False)
+		obj.send(Message(reply, reply_to_id=message_object.uid), thread_id=thread_id, thread_type=thread_type)
+	elif command == "on":
+		setBotState(True)
+		obj.send(Message(reply, reply_to_id=message_object.uid), thread_id=thread_id, thread_type=thread_type)

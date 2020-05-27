@@ -23,13 +23,13 @@ import os
 import json
 from typing import Dict
 
-# Bot's Status (Down or Up)
-botState = False
-
 # Facebook User Details
 user = "01647561445"
 password = "798193274622"
-cookieFile = os.path.realpath(os.path.join(os.getcwd(), "cookies.json"))
+cookieFile = os.path.realpath(os.path.join(os.getcwd(), "codebot", "conf", "cookies.json"))
+
+# Bot Status
+botState = os.path.realpath(os.path.join(os.getcwd(), "codebot", "conf", "botstat.txt"))
 
 # User-Agent
 agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"
@@ -78,3 +78,13 @@ def setfbCookie(cookies: dict):
 	# fbchat Session
 	with open(cookieFile, "w") as cookie:
 		json.dump(cookies, cookie)
+
+def setBotState(condition: bool):
+	with open(botState, "w") as stat:
+		if condition: stat.write("True")
+		else: stat.write("False")
+
+def getBotState():
+	with open(botState, "r") as stat:
+		if stat.readline() == "True": return True
+		else: return False
