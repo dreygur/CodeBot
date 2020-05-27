@@ -86,3 +86,8 @@ class CodeBot(Client):
 		if inComingText.startswith("/ctrl"):
 			# Set the bot to reply or not
 			ctrl(self, inComingText, message_object, thread_id, thread_type)
+
+		if not inComingText.startswith("/") and getBotState() is False:
+			if thread_type == ThreadType.USER:
+				reply = "I'm not availbale right now. I'll reply you within a short time.\nThanks!"
+				self.send(Message(reply, reply_to_id=message_object.uid), thread_id=thread_id, thread_type=thread_type)

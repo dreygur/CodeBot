@@ -33,6 +33,7 @@ def ctrl(obj, inComingText, message_object, thread_id, thread_type):
 
 	command = inComingText.split(" ")[1]
 	reply = f"Bot Turned {command}!"
+
 	if command == "off":
 		setBotState(False)
 		obj.send(Message(reply, reply_to_id=message_object.uid), thread_id=thread_id, thread_type=thread_type)
