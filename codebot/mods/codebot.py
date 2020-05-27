@@ -32,6 +32,7 @@ from fbchat.models import *
 
 # In-App Modules
 from codebot.mods.run import run
+from codebot.mods.control import ctrl
 from codebot.mods.creds import botState
 from codebot.mods.creds import ubuntuPastebinCookie
 
