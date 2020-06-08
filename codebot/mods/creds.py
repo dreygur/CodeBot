@@ -24,8 +24,8 @@ import json
 from typing import Dict
 
 # Facebook User Details
-user = "01913580250"
-password = "RYT.Yeasin@221"
+user = "01647564515"
+password = "798193274622"
 cookieFile = os.path.realpath(os.path.join(os.getcwd(), "codebot", "conf", "cookies.json"))
 
 # Bot Status
