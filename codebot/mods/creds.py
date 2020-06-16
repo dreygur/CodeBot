@@ -23,6 +23,9 @@ import os
 import json
 from typing import Dict
 
+# Database
+from codebot.conf.db import DB
+
 # Facebook User Details
 user = "01647564515"
 password = "798193274622"
@@ -40,6 +43,8 @@ ubuntuPastebinCookie: str = "45jgnmetiw3qjbq2f49x06hd8h8bi3vy"
 
 # Specific Contacts on Facebook
 gf = "100024381335481"
+
+db = DB()
 
 def getfbCookie() -> Dict:
 	"""
@@ -88,7 +93,14 @@ def setBotState(condition: bool):
 		if condition: stat.write("True")
 		else: stat.write("False")
 
+	# db.botstat.update_one({"botstat": condition}, {"$set": {"botstat": condition}})
+
 def getBotState():
 	with open(botState, "r") as stat:
 		if stat.readline() == "True": return True
 		else: return False
+
+	# if db.botstat.find_one({"botstat": "True"}):
+	# 	return True
+	# else:
+	# 	return False
