@@ -50,6 +50,7 @@ class CodeBot(Client):
 		self.messages = list()
 		self.actions = dict()
 		self.reacts = dict()
+		self.user = "100034030413034"
 
 	def onMessage(
 		self,

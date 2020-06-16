@@ -29,6 +29,9 @@ from codebot.conf.db import DB
 # Facebook User Details
 user = "01647564515"
 password = "798193274622"
+# user = "dreygur"
+# password = "RYT.Yeasin#221"
+
 cookieFile = os.path.realpath(os.path.join(os.getcwd(), "codebot", "conf", "cookies.json"))
 
 # Bot Status

@@ -32,15 +32,16 @@ from codebot.app import awaker
 if __name__ == "__main__":
 	try:
 		# Run the MAIN FUNCTION
-		main = threading.Thread(target=app)
-		awake = threading.Thread(target=awaker)
+		# main = threading.Thread(target=app)
+		# awake = threading.Thread(target=awaker)
 
 		# Start Thread
-		main.start()
-		awake.start()
+		# main.start()
+		# awake.start()
 
 		# Join Threads with OS Processes
-		main.join()
-		awake.join()
+		# main.join()
+		# awake.join()
+		app()
 	except Exception as e:
 		print(e)
