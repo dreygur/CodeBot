@@ -24,6 +24,6 @@ six==1.15.0
 soupsieve==2.0.1
 urllib3==1.25.9
 wcwidth==0.1.9
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 zipp==3.1.0
 pymongo[srv,tls]
